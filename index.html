@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bible Says Love</title>
+    <!-- Include Bootstrap CSS for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Spinner Icon -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8GMHFEP07K"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-8GMHFEP07K');
+</script>
+
+<body class="bg-light">
+    <!-- Main container for the webpage content -->
+    <div class="container py-5">
+        <h1 class="text-center mb-4">What Does the Bible Say About...</h1>
+        <!-- Input field for the user to enter their query -->
+        <div class="mb-3">
+            <label for="subject" class="form-label">Enter a subject:</label>
+            <input type="text" id="subject" class="form-control" placeholder="love the Lord, love thy neighbor, etc...">
+        </div>
+
+        <!-- Cool spinner -->
+        <div class="text-center loading-spinner" id="loadingSpinner" style="display: none;">
+            <i class="fas fa-spinner fa-spin fa-3x"></i>
+            <p>Loading...</p>
+        </div>
+
+        <!-- Submit button to send the query -->
+        <div class="text-center">
+            <button id="submit-btn" class="btn btn-success">Submit</button>
+        </div>
+
+        <!-- Warning message -->
+        <div class="mb-3">
+            <br>
+            <p for="subject" class="help-block">Max 30 words in the subject input to limit abuse. This is only a helper
+                tool and
+                should always lead you back to scripture. Remember the importance of context (Jeremiah 29:11).</p>
+            <p for="subject" class="help-block">Remember, <a href="https://youowemeacoffee.com" target="_blank">you owe
+                    me a coffee</a>.</p>
+        </div>
+    </div>
+
+    <!-- Modal backdrop for overlay effect -->
+    <div id="modal-overlay" class="modal-backdrop fade show" style="display: none;"></div>
+    <!-- Modal for displaying the response or error message -->
+    <div id="modal" class="modal fade" tabindex="-1" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Bible Says</h5>
+                    <button type="button" class="btn-close" id="close-btn" aria-label="Close"></button>
+                </div>
+                <div id="modal-content" class="modal-body"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS for modal functionality -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Get references to HTML elements
+        const submitButton = document.getElementById('submit-btn');
+        const modal = new bootstrap.Modal(document.getElementById('modal')); // Bootstrap modal instance
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalContent = document.getElementById('modal-content');
+        const closeButton = document.getElementById('close-btn');
+        const input = document.getElementById('subject');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        // Event listener for the input
+        input.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                submitButton.click();
+            }
+        });
+
+        // Event listener for the submit button
+        submitButton.addEventListener('click', async () => {
+            // Get and trim the user input from the text field
+            const subject = input.value.trim();
+            if (!subject) {
+                // Show an alert if the input field is empty
+                alert('Please enter a subject.');
+                return;
+            }
+
+            // Show loading spinner
+            loadingSpinner.style.display = 'block';
+
+            try {
+                // Send a POST request to the API with the user query
+                const response = await fetch('https://biblesays.love/api', {
+                    method: 'POST',
+                    mode: "same-origin",
+                    headers: {
+                        'Content-Type': 'application/json' // Specify JSON format for the request
+                    },
+                    body: JSON.stringify({ message: subject }) // Pass the user input as a JSON payload
+                });
+
+                // Check if the response is not OK
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                // Extract the response text
+                const result = await response.json();
+
+                // Convert newline characters to <br> for line breaks in HTML
+                const formattedText = (result.content || "Oops... something went wrong...").replace(/\n/g, '<br>');
+
+                // Insert the formatted text into the modal's body
+                modalContent.innerHTML = formattedText;
+            } catch (error) {
+                // Display the error message in the modal if the request fails
+                modalContent.textContent = 'An error occurred: ' + error.message;
+            }
+
+            // Hide loading spinner
+            loadingSpinner.style.display = 'none';
+
+            // Show the modal
+            modal.show();
+        });
+
+        // Event listener for the close button inside the modal
+        closeButton.addEventListener('click', () => {
+            modal.hide(); // Hide the modal when the close button is clicked
+        });
+
+        // Event listener for clicking on the modal overlay
+        modalOverlay.addEventListener('click', () => {
+            modal.hide(); // Hide the modal when the overlay is clicked
+        });
+    </script>
+    <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+        data-id="aaronyangi" data-description="Support me on Buy me a coffee!" data-message="You Owe Me a Coffee"
+        data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
+</body>
+
+</html>
