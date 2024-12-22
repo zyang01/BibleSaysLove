@@ -24,11 +24,15 @@
 <body class="bg-light">
     <!-- Main container for the webpage content -->
     <div class="container py-5">
-        <h1 class="text-center mb-4">What Does the Bible Say About...</h1>
+        <h1 class="text-center mb-4">Bible Says Love</h1>
         <!-- Input field for the user to enter their query -->
-        <div class="mb-3">
-            <label for="subject" class="form-label">Enter a subject:</label>
-            <input type="text" id="subject" class="form-control" placeholder="e.g. love the Lord, love thy neighbor, ...">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">What does the Bible say about</span>
+            </div>
+            <input type="text" id="subject" class="form-control" placeholder="e.g. love the Lord, love thy neighbor, ..."
+                aria-describedby="basic-addon1">
+            <button class="btn btn-outline-secondary" type="button" id="clearButton">X</button>
         </div>
 
         <!-- Cool spinner -->
@@ -45,10 +49,12 @@
         <!-- Warning message -->
         <div class="mb-3">
             <br>
+            <p for="subject" class="help-block">Results can take up to 10 seconds to load. Remember, <a href="https://www.biblegateway.com/passage/?search=1%20Corinthians%2013%3A4&version=ESV" target="_blank">love is patient</a>. 😘</p>
             <p for="subject" class="help-block">Max 30 words in the subject input to limit abuse. This is only a helper
                 tool and
-                should always lead you back to scripture. Don't forget the importance of context (<a href="https://www.crossway.org/articles/the-right-and-wrong-way-to-read-jeremiah-2911/" target="_blank">Jeremiah 29:11</a>).</p>
-            <p for="subject" class="help-block">You can read about my journey <a href="https://youowemeacoffee.com" target="_blank">here</a>.</p>
+                should always lead you back to <a href="https://www.esv.org/" target="_blank">scripture</a>. Don't forget the importance of context (<a href="https://www.crossway.org/articles/the-right-and-wrong-way-to-read-jeremiah-2911/" target="_blank">Jeremiah 29:11</a>).</p>
+            <p for="subject" class="help-block">This is an open-source project. If you would like to run your own instance or contribute, you can find the <a href="https://github.com/zyang01/BibleSaysLove" target="_blank">source code on GitHub</a>. I can be contacted via email on Jonah(at)BibleSays.Love if you have any whacky ideas or suggestions.</p>
+            <p for="subject" class="help-block">You can read about my journey <a href="https://youowemeacoffee.com" target="_blank">here</a>. Feel free to buy me a coffee.</p>
         </div>
     </div>
 
@@ -143,6 +149,11 @@
         // Event listener for clicking on the modal overlay
         modalOverlay.addEventListener('click', () => {
             modal.hide(); // Hide the modal when the overlay is clicked
+        });
+
+        // Event listener for clearing the input field when the clear button is clicked
+        document.getElementById('clearButton').addEventListener('click', function () {
+            input.value = '';
         });
     </script>
     <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="aaronyangi" data-description="Support me on Buy me a coffee!" data-message="" data-color="#5F7FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
