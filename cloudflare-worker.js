@@ -60,7 +60,7 @@ export default {
       }
 
       // Parse the incoming request JSON body
-      const { message } = await request.json();
+      const { message, cn } = await request.json();
 
       if (!message) {
         return new Response(
@@ -90,7 +90,12 @@ export default {
       const openAiPayload = {
         model: OPENAI_API_MODEL,
         messages: [
-          { role: "user", content: `what does the Bible say about ${message}` },
+          {
+            role: "user",
+            content: cn
+              ? `圣经怎么说${message}`
+              : `what does the Bible say about ${message}`,
+          },
         ],
       };
 
